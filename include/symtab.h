@@ -133,6 +133,7 @@ public:
   std::shared_ptr<Type> get_fn_type() const;
 
   int get_depth() const;
+  void remove_symbol(int idx);
 
 private:
   // TODO: add helper functions

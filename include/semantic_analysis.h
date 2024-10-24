@@ -29,6 +29,8 @@
 #include "symtab.h"
 #include "ast_visitor.h"
 
+enum class SymbolType;
+
 class SemanticAnalysis : public ASTVisitor {
 public:
   typedef std::vector<SymbolTable *> SymbolTableList;
@@ -84,6 +86,8 @@ private:
   void leave_scope();
 
   // TODO: add helper functions
+  SymbolTable* get_symbol_table(const std::string& name);
+  void check_assignment(Node* n, std::shared_ptr<Type> lhs, std::shared_ptr<Type> rhs);
 };
 
 #endif // SEMANTIC_ANALYSIS_H

@@ -156,4 +156,10 @@ int SymbolTable::get_depth() const {
   return depth;
 }
 
-// TODO: add helper functions
+void SymbolTable::remove_symbol(int idx) {
+  assert(idx < get_num_entries());
+  Symbol* symbol_to_delete = get_entry(idx);
+  m_symbols.erase(m_symbols.begin() + idx);
+  m_lookup.erase(symbol_to_delete->get_name());
+  delete symbol_to_delete;
+}

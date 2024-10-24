@@ -39,17 +39,25 @@
 //! result of the evaluation is stored.
 class NodeBase : public HasOperand {
 private:
-  // TODO: fields (pointer to Type, pointer to Symbol, etc.)
-
   // copy ctor and assignment operator not supported
   NodeBase(const NodeBase &);
   NodeBase &operator=(const NodeBase &);
+  std::shared_ptr<Type> m_type;
+  Symbol* m_symbol;
+  bool literal;
 
 public:
   NodeBase();
   virtual ~NodeBase();
 
-  // TODO: add member functions
+  void set_symbol(Symbol *symbol);
+  void set_type(const std::shared_ptr<Type> &type);
+  bool has_symbol() const;
+  Symbol* get_symbol() const;
+  std::shared_ptr<Type> get_type() const;
+  void override_type(const std::shared_ptr<Type> &type);
+  void make_literal();
+  bool is_literal();
 };
 
 #endif // NODE_BASE_H
