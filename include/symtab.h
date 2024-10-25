@@ -136,7 +136,6 @@ public:
   void remove_symbol(int idx);
 
 private:
-  // TODO: add helper functions
 };
 
 #endif // SYMTAB_H

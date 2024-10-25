@@ -172,16 +172,12 @@ void SemanticAnalysis::visit_function_declaration(Node *n) {
   visit(n->get_kid(0));
   const std::string& func_name = n->get_kid(1)->get_str();
   std::shared_ptr<Type> type = n->get_kid(0)->get_type();
-  bool func_undefined = false;
 
   SymbolTable* func_table = get_symbol_table("function " + func_name);
-  if (!func_table) {
-    enter_scope("function " + func_name);
-    func_undefined = true;
-  } else {
-    m_cur_symtab = func_table;
-  }
-
+  if (func_table)
+    SemanticError::raise(n->get_loc(), "Cannot redeclare a function");
+  
+  enter_scope("function " + func_name);
   Node* params = n->get_kid(2);
   visit_function_parameter_list(params);
 
@@ -190,18 +186,15 @@ void SemanticAnalysis::visit_function_declaration(Node *n) {
   for (auto it = params->cbegin(); it != params->cend(); it++) {
     std::string p_name = (*it)->get_kid(1)->get_kid(0)->get_str();
     if (param_set.count(p_name))
-      SemanticError::raise(n->get_loc(),"Function cannot have two params with same name");
+      SemanticError::raise(n->get_loc(), "Function cannot have two params with same name");
     param_set.insert(p_name);
     final_type->add_member(Member(p_name, (*it)->get_type()));
   }
 
-  if (func_undefined) {
-    n->set_type(final_type);
-    m_cur_symtab->set_fn_type(final_type);
-  }
+  n->set_type(final_type);
+  m_cur_symtab->set_fn_type(final_type);
   leave_scope();
-  if (func_undefined)
-    m_cur_symtab->add_entry(n->get_loc(), SymbolKind::FUNCTION, func_name, n->get_type());
+  m_cur_symtab->add_entry(n->get_loc(), SymbolKind::FUNCTION, func_name, n->get_type());
 }
 
 void SemanticAnalysis::visit_function_parameter_list(Node *n) {
