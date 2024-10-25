@@ -85,7 +85,6 @@ private:
   //! Return to the parent of the current scope.
   void leave_scope();
 
-  // TODO: add helper functions
   SymbolTable* get_symbol_table(const std::string& name);
   void check_assignment(Node* n, std::shared_ptr<Type> lhs, std::shared_ptr<Type> rhs);
 };
