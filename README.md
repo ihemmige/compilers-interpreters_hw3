@@ -1,5 +1,4 @@
 # NearlyCC: compiler skeleton for the "NearlyC" C subset
-
 This project is a compiler framework for the [NearlyC](https://github.com/daveho/nearly_c)
 C subset front end. It contains the following components (in addition to the code provided
 by `nearly_c`):
